@@ -1,0 +1,10 @@
+std_msgs/Header header
+float64[6] joint_pos_rad
+geometry_msgs/Pose tcp_pose
+int32 error_code
+int8 gripper_measured_state
+float32 gripper_position
+float32 gripper_force
+float32 gripper_current
+bool gripper_moving
+bool gripper_measurement_valid

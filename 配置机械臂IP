@@ -1,0 +1,171 @@
+T928 从左往右数第二个接口
+
+
+sudo ip -4 addr flush dev eth1
+sudo ip addr add 192.168.1.100/24 dev eth1
+sudo ip link set eth1 up
+
+sudo ip route replace 192.168.1.18/32 dev eth1 src 192.168.1.100
+
+echo "===== eth1 IP ====="
+ip addr show eth1
+
+echo "===== route ====="
+ip route get 192.168.1.18
+
+echo "===== ping arm ====="
+ping -c 4 192.168.1.18
+
+echo "===== test port 8080 ====="
+nc -vz -w 3 192.168.1.18 8080
+
+
+
+
+
+ 我刚刚提供的这组手眼标定结果，是在 D435i 已固定安装到机械臂末端之后 得到的：
+2026-09-16 15:50:26 - __main__ - INFO: 旋转矩阵是:
+ [[-0.85684041 -0.51514442  0.02123071]
+ [ 0.51506258 -0.85709906 -0.00957856]
+ [ 0.02313116  0.00272785  0.99972872]]
+2026-09-16 15:50:26 - __main__ - INFO: 平移向量是:
+ [[0.0757663 ]
+ [0.0625736 ]
+ [0.01734084]]
+2026-09-16 15:50:26 - __main__ - INFO: 四元数是：
+ [ 0.01151008 -0.00177748  0.963544    0.2672963 ]
+修改夹爪 TCP 的定义。
+
+当前机械臂末端安装 EG2-4B2 两指电动夹爪。夹爪中心线与机械臂末端法兰中心线同轴，夹爪沿 robot_end 坐标系 Z 轴方向安装。
+
+本项目不把 TCP 定义在夹爪内部的夹持区域，而是明确将 TCP 定义为：
+
+EG2-4B2 左右两个夹指最前端之间的几何中点。
+
+命名为：
+
+gripper_tip_center
+
+后续苹果抓取的目标是：
+
+gripper_tip_center == apple_center
+
+即机械臂最终运动完成时，夹爪两个指尖末端之间的中心点与视觉检测得到的苹果三维中心点重合。
+
+不允许直接令：
+
+robot_end_position = apple_center
+
+因为 robot_end 是机械臂法兰原点，而不是夹爪末端。
+
+夹爪与法兰同轴，因此 TCP 相对于 robot_end 原点没有 X/Y 平移：
+
+tx = 0.0
+ty = 0.0
+
+仅存在沿机械臂末端 Z 轴的偏移。
+
+当前法兰转接夹具厚度为：
+
+FLANGE_ADAPTER_LENGTH = 0.009  # m
+
+EG2-4B2 从安装面到左右夹指最前端平面的长度记为：
+
+GRIPPER_LENGTH_TO_TIP
+
+因此：
+
+GRIPPER_TCP_Z = GRIPPER_LENGTH_TO_TIP + 0.009
+
+如果确认 EG2-4B2 图纸中的 158 mm 就是“夹爪安装面到夹指最前端”的轴向长度，则：
+
+GRIPPER_LENGTH_TO_TIP = 0.158
+FLANGE_ADAPTER_LENGTH = 0.009
+GRIPPER_TCP_Z = 0.167
+
+并建立：
+
+T_end_gripper_tip = np.eye(4)
+T_end_gripper_tip[2, 3] = GRIPPER_TCP_Z
+
+对苹果抓取时：
+
+apple_center_camera
+    ↓ 手眼标定
+apple_center_base
+    ↓
+desired_gripper_tip_center
+    ↓ TCP反补偿
+desired_robot_end
+
+使用：
+
+T_base_end_desired = (
+    T_base_gripper_tip_desired
+    @ np.linalg.inv(T_end_gripper_tip)
+)
+
+最终要求：
+
+gripper_tip_center 与 apple_center 重合
+
+在真实运动前先使用 dry_run 输出苹果中心、夹爪 TCP 和计算得到的 robot_end 目标位置，不立即驱动机械臂。
+
+
+
+
+去掉现有的安全空间限制，可凭借摄像头的深度信息保证运动安全，或者设置末端工具的包络形成较小安全空间
+
+
+
+
+
+确保以上修改已经完成后将法兰额外厚度由9mm改为10mm，接着驱动真机跑通流程，我在旁边准备断电
+
+
+
+
+
+软件编写：使用pyQT5.12.8编写可视化界面
+
+1、由视觉部分与机械臂RML63-B部分两大部分组成
+
+2、视觉部分包括：摄像头画面实时显示，实时显示检测到的苹果在base坐标系下的坐标，打印成功日志。
+
+3、机械臂部分包括：根据机械臂回传信息和URDF重建并实时显示机械臂模型，要求动态体现；显示当前的位姿信息、关节角度、运行速度、手眼标定矩阵、Home位姿、末端工具以及法兰建模信息并可通过界面对其进行修改并下发；可以一键进行抓取任务与一键前置参数检查并显示抓取任务的日志。（请注意各个坐标系的定义）
+
+4、可参考瑞尔曼官方软件的布局合理规划，要求简洁美观运行稳定。
+
+以上为将要发给codex执行的prompt，请结合瑞尔曼官方软件的界面布局对其命令语进行优化
+
+
+
+
+1、为什么这个机械臂会在抓取苹果之后显示[WARNING] Robot disconnected，等待一段时间后，才会[SUCCESS] Robot connected
+[22:52:50] [ROBOT] [pick_task_manager.py-5] [WARN] [1789570370.044956862] [pick_task_manager]: Rejected apple target: dynamic TF base_link -> robot_end is stale: 7.171s > 1.000s
+[22:52:50] [ROBOT] [pick_task_manager.py-5] [WARN] [1789570370.115724264] [pick_task_manager]: Rejected apple target: dynamic TF base_link -> robot_end is stale: 7.241s > 1.000s
+[22:52:50] [ROBOT] [pick_task_manager.py-5] [WARN] [1789570370.186136463] [pick_task_manager]: Rejected apple target: dynamic TF base_link -> robot_end is stale: 7.312s > 1.000s
+[22:52:50] [ROBOT] [pick_task_manager.py-5] [WARN] [1789570370.254581796] [pick_task_manager]: Rejected apple target: dynamic TF base_link -> robot_end is stale: 7.380s > 1.000s
+[22:52:55] [SUCCESS] Robot connected
+[22:52:55] [ROBOT] [pick_task_manager.py-5] [INFO] [1789570375.986707459] [pick_task_manager]: picker state: CLOSE_GRIPPER
+[22:52:56] [ROBOT] [pick_task_manager.py-5] [INFO] [1789570376.497185431] [pick_task_manager]: picker state: RETREAT
+[22:52:58] [WARNING] Robot disconnected
+[22:53:09] [SUCCESS] Robot connected
+[22:53:09] [ROBOT] [pick_task_manager.py-5] [INFO] [1789570389.720551000] [pick_task_manager]: picker state: HOME
+[22:53:12] [WARNING] Robot disconnected
+[22:53:15] [SUCCESS] Robot connected
+[22:53:15] [ROBOT] [pick_task_manager.py-5] [INFO] [1789570395.116454965] [pick_task_manager]: picker state: RELEASE_GRIPPER
+[22:53:15] [ROBOT] [pick_task_manager.py-5] [INFO] [1789570395.126116106] [pick_task_manager]: picker state: DONE
+[22:53:15] [SUCCESS] Grasp sequence completed
+[22:53:15] [SUCCESS] grasp: pick sequence completed
+
+
+2、motion speed进行速度调节时，改变数值大小，并不会引起速度的变化，依然保持原来的速度
+3、将界面显示里面的英文全部换成中文，同时点击connect camera之后变成disconnect camera 图标的颜色应该发生变化，比如由蓝色变成红色。
+4、现在出现以下情况，若苹果的x在base坐标系下的数值<0.5，则超出安全空间无法进行夹取，请确认安全空间在手册中是否有无硬性规定，如果没有的话，请去掉。
+3、在相机识别苹果中心点正确的情况下，夹爪的右侧爪会碰到苹果，夹取并不准确***
+
+
+
+
+

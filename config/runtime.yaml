@@ -1,0 +1,83 @@
+# Both sections use ROS2's node/ros__parameters schema. The launch manager
+# reads its own section; apple_detector loads this file directly.
+launch_manager:
+  ros__parameters:
+    project_root: "/home/nvidia/RL-Orchard"
+    setup_script: "/home/nvidia/RL-Orchard/scripts/setup_rl_env.sh"
+    python: "/home/nvidia/miniconda3/envs/visionyolo/bin/python"
+    log_dir: "/tmp/rl_full_pick_launch"
+    ros_log_dir: "/tmp/rl_full_pick_launch/ros_log"
+    ros_home: "/tmp/rl_full_pick_launch/ros_home"
+    workspace: "/home/nvidia/ros2_ws"
+    discovery_timeout_s: 20.0
+    poll_interval_s: 0.25
+    # The standalone launcher is an offline/software integration path.  It
+    # advertises the bridge API but must not open a RealMan TCP connection.
+    software_only: true
+    bridge_command: ["ros2", "launch", "orchard_picker", "driver_only.launch.py"]
+    vision_command: ["ros2", "run", "apple_vision", "apple_detector"]
+    bridge:
+      package: "orchard_picker"
+      launch: "driver_only.launch.py"
+      params: "/home/nvidia/ros2_ws/src/orchard_picker/config/picker_params.yaml"
+      node: "/rm_json_bridge"
+      services:
+        "/rm_json_bridge/get_arm_state": "orchard_picker/srv/GetArmState"
+        "/rm_json_bridge/gripper_pick": "orchard_picker/srv/GripperPick"
+        "/rm_json_bridge/gripper_release": "orchard_picker/srv/GripperRelease"
+        "/rm_json_bridge/movej": "orchard_picker/srv/MoveJ"
+    vision:
+      package: "apple_vision"
+      executable: "apple_detector"
+      node: "/apple_detector"
+      topics:
+        "/apple_positions": "*"
+        "/apple/target_point": "geometry_msgs/msg/PointStamped"
+    pick_task_manager_command: ["ros2", "run", "orchard_picker", "pick_task_manager.py"]
+    pick_task_manager:
+      package: "orchard_picker"
+      executable: "pick_task_manager.py"
+      params: "/home/nvidia/ros2_ws/src/orchard_picker/config/picker_params.yaml"
+      node: "/pick_task_manager"
+      topics:
+        "/pick_task_manager/state": "*"
+        "/pick_task_manager/target_base": "*"
+    tf_commands:
+      tcp_tf_publisher: ["ros2", "run", "orchard_picker", "tcp_tf_publisher.py"]
+      hand_eye_static_tf_publisher: ["ros2", "run", "orchard_picker", "hand_eye_static_tf_publisher.py"]
+      gripper_tcp_static_tf_publisher: ["ros2", "run", "orchard_picker", "gripper_tcp_static_tf_publisher.py"]
+    tf:
+      params: "/home/nvidia/ros2_ws/src/orchard_picker/config/picker_params.yaml"
+      nodes:
+        tcp_tf_publisher: "/tcp_tf_publisher"
+        hand_eye_static_tf_publisher: "/hand_eye_static_tf_publisher"
+        gripper_tcp_static_tf_publisher: "/gripper_tcp_static_tf_publisher"
+      topics: ["/tf", "/tf_static"]
+    full_pick:
+      hardware: false
+      node: "/full_pick_v2"
+      command: ["-m", "full_pick_v2", "--control-mode", "high-follow", "--release-mode", "configured"]
+
+apple_detector:
+  ros__parameters:
+    yolo_model_path: "/home/nvidia/vision/ultralytics-8.4.43/best26s.pt"
+    sam_model_path: "/home/nvidia/vision/ultralytics-8.4.43/sam2_t.pt"
+    confidence_threshold: 0.85
+    enable_sam: false
+    sam_every_n_frames: 3
+    publish_topic: "/apple_positions"
+    publish_target_point: true
+    target_point_topic: "/apple/target_point"
+    annotated_image_topic: "/apple/annotated_image"
+    target_info_topic: "/apple/target_info"
+    target_apple_id: -1
+    camera_frame: "camera_link"
+    camera_serial: "908212070350"
+    show_image: false
+    timer_period: 0.01
+    depth_window_radius: 3
+    apple_radius_m: 0.03
+    target_stability_frames: 5
+    target_max_jitter_m: 0.015
+    target_min_distance_m: 0.15
+    target_max_distance_m: 1.20

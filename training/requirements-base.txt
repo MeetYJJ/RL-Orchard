@@ -1,0 +1,5 @@
+# Base dependencies for the standalone HDF5/BC training pipeline.
+# Install PyTorch separately for the training host's CPU/CUDA combination.
+numpy
+h5py
+PyYAML

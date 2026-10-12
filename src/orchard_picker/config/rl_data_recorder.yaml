@@ -1,0 +1,60 @@
+rl_data_recorder:
+  ros__parameters:
+    enabled: true
+    dataset_root: "/home/nvidia/RL-Orchard/rl_dataset"
+    dataset_version: "apple_rl_v1.2"
+
+    # Current source is the read-only RobotState publisher from rm_json_bridge.
+    # Select sensor_msgs_joint_state only after verifying names and freshness.
+    joint_state_source: "rm_json_bridge"
+    joint_state_topic: "/rm_json_bridge/arm_state"
+    # Only used when joint_state_source=sensor_msgs_joint_state.  The default
+    # rm_json_bridge source is RobotState on the topic above.
+    joint_state_joint_names: []
+    joint_state_nominal_rate_hz: 0.0
+
+    record_hz: 4.0
+    max_sensor_age_ms: 150.0
+    max_robot_state_age_ms: 300.0
+    # Async read-only fallback only when the published state is stale.
+    robot_state_poll_hz: 5.0
+
+    save_rgb: true
+    save_depth: true
+    save_teacher_info: true
+    save_raw_command_debug: false
+    auto_start_on_active: true
+    # Allow cross-topic outcome/state delivery to arrive after active=false.
+    outcome_wait_ms: 250.0
+    # Episodes below these limits are retained but marked invalid; success is
+    # forcibly false.  Values are configurable for offline/mock collection.
+    min_episode_samples: 5
+    min_episode_duration_sec: 0.5
+
+    record_image_width: 640
+    record_image_height: 480
+    sample_queue_size: 64
+    hdf5_compression: "lzf"
+    flush_every_n_samples: 20
+    # Collection metadata is one-shot and ignored if stale.
+    collection_metadata_max_age_sec: 30.0
+
+    rgb_topic: "/apple_vision/rgb"
+    depth_topic: "/apple_vision/aligned_depth"
+    camera_metadata_topic: "/apple_vision/camera_metadata"
+    robot_state_topic: "/rm_json_bridge/arm_state"
+    robot_state_service: "/rm_json_bridge/get_arm_state"
+    task_state_topic: "/pick_task_manager/state"
+    task_active_topic: "/pick_task_manager/active"
+    task_outcome_topic: "/pick_task_manager/outcome"
+    expert_action_topic: "/pick_task_manager/expert_action"
+    apple_camera_topic: "/apple/target_info"
+    apple_base_topic: "/pick_task_manager/target_base"
+    raw_tx_topic: "/rm_json_bridge/raw_tx"
+    collection_metadata_topic: "/rl_collection/episode_metadata"
+    recording_control_service: "/rl_data_recorder/set_enabled"
+    prepare_episode_service: "/rl_data_recorder/prepare_episode"
+    abort_episode_service: "/rl_data_recorder/abort_episode"
+    recording_state_topic: "/rl_data_recorder/state"
+    emergency_stop_topic: "/rm_json_bridge/emergency_stop"
+    finalized_topic: "/rl_data_recorder/finalized"

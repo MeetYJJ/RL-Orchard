@@ -1,0 +1,8 @@
+# Stage 3B provisional smoke-test settings. Not a final SAC configuration.
+gamma: 0.99
+alpha: 0.2
+learning_rate: 0.001
+batch_size: 64
+epochs: 500
+tau: 0.005
+seed: 42

@@ -1,0 +1,28 @@
+/apple_detector:
+  ros__parameters:
+    aligned_depth_topic: /apple_vision/aligned_depth
+    annotated_image_topic: /apple/annotated_image
+    apple_radius_m: 0.03
+    camera_frame: camera_link
+    camera_metadata_topic: /apple_vision/camera_metadata
+    camera_serial: '908212070350'
+    confidence_threshold: 0.8
+    depth_window_radius: 3
+    enable_sam: false
+    publish_target_point: true
+    publish_topic: /apple_positions
+    raw_rgb_topic: /apple_vision/rgb
+    sam_every_n_frames: 3
+    sam_model_path: /home/nvidia/vision/ultralytics-8.4.43/sam2_t.pt
+    show_image: false
+    target_apple_id: -1
+    target_info_topic: /apple/target_info
+    target_max_distance_m: 1.2
+    target_max_jitter_m: 0.015
+    target_min_distance_m: 0.15
+    target_point_topic: /apple/target_point
+    target_stability_frames: 5
+    timer_period: 0.01
+    training_publish_hz: 30.0
+    use_sim_time: false
+    yolo_model_path: /home/nvidia/vision/ultralytics-8.4.43/best26s.pt

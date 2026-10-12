@@ -1,0 +1,70 @@
+__pycache__/
+*.py[cod]
+
+*.log
+log/
+
+*.tmp.hdf5
+*.bag
+
+.vscode/
+.idea/
+
+*.pt
+*.pth
+build/
+install/
+log/
+vendor/
+datasets/
+rl_dataset/
+*.pt
+*.pth
+*.onnx
+
+# ROS2 build files
+build/
+install/
+log/
+
+# datasets
+dataset/
+datasets/
+rl_dataset/
+
+# model weights
+*.pt
+*.pth
+*.onnx
+
+# python env
+venv/
+.env/
+
+# training outputs
+training/runs/
+*.npz
+
+# compiled files
+*.o
+
+# archives
+*.tar.gz
+
+# backup
+legacy*/
+
+# ROS2
+build/
+install/
+log/
+
+# datasets
+dataset/
+datasets/
+rl_dataset/
+
+# model weights
+*.pt
+*.pth
+*.onnx

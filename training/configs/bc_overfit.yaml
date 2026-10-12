@@ -1,0 +1,13 @@
+# Reference defaults for train_bc_overfit.py. The script accepts CLI values.
+seed: 42
+learning_rate: 0.001
+epochs: 2000
+batch_size: 0
+max_transitions: 32
+state_dim: 12
+action_dim: 6
+hidden_dim: 256
+alignment_tolerance: 1.0e-5
+state_normalization: "(state - mean) / (std + 1.0e-8)"
+action_scale: "per_joint_max_abs_from_selected_expert_transitions"
+action_semantics: "executed_delta_joint[t] = q[t+1] - q[t], rad"

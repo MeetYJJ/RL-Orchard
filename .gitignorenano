@@ -1,0 +1,34 @@
+# ROS build
+build/
+install/
+log/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Conda
+.conda/
+
+# Models
+*.pt
+*.pth
+*.onnx
+
+# Dataset
+data/
+datasets/
+
+# Camera recordings
+*.bag
+*.db3
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Temp
+tmp/

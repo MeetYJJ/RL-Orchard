@@ -1,0 +1,40 @@
+apple_detector:
+  ros__parameters:
+    # Change these two paths on the Ubuntu/ROS 2 computer.
+    yolo_model_path: "/home/nvidia/vision/ultralytics-8.4.43/best26s.pt"
+    sam_model_path: "/home/nvidia/vision/ultralytics-8.4.43/sam2_t.pt"
+
+    confidence_threshold: 0.8
+    enable_sam: false
+    sam_every_n_frames: 3
+
+    publish_topic: "/apple_positions"
+    publish_target_point: true
+    target_point_topic: "/apple/target_point"
+    annotated_image_topic: "/apple/annotated_image"
+    target_info_topic: "/apple/target_info"
+    # Read-only training streams reuse the same aligned RealSense frames.
+    # No second rs.pipeline is created by the recorder.
+    raw_rgb_topic: "/apple_vision/rgb"
+    aligned_depth_topic: "/apple_vision/aligned_depth"
+    camera_metadata_topic: "/apple_vision/camera_metadata"
+    # Raw RGB/depth are published by the independent frame publisher.  Keep
+    # this at the camera rate; the latest-frame cache prevents backlog.
+    training_publish_hz: 30.0
+    target_apple_id: -1
+    camera_frame: "camera_link"
+    # Fixed eye-in-hand D435i selected after the 2026-09-16 camera replacement.
+    camera_serial: "908212070350"
+    # The PyQt GUI is the only normal display surface.
+    show_image: false
+
+    # The timer checks for a new RealSense frame without blocking ROS.
+    timer_period: 0.01
+    depth_window_radius: 3
+    # Depth is the visible surface. Approximate a 3 cm-radius sphere center
+    # along the camera ray before publishing /apple/target_point.
+    apple_radius_m: 0.03
+    target_stability_frames: 5
+    target_max_jitter_m: 0.015
+    target_min_distance_m: 0.15
+    target_max_distance_m: 1.20

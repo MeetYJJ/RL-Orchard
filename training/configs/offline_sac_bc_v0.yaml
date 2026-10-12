@@ -1,0 +1,20 @@
+# Provisional Stage 3C Offline SAC + BC settings; tune on validation only.
+gamma: 0.99
+alpha: 0.2
+tau: 0.005
+critic_learning_rate: 0.001
+actor_learning_rate: 0.0003
+batch_size: 64
+epochs: 200
+bc_weight: 1.0
+seed: 42
+device: auto
+patience: 30
+validation_interval: 1
+max_q_abs: 1000.0
+max_policy_saturation_fraction: 0.50
+max_validation_bc_ratio: 1.50
+max_validation_bc_increase: 0.02
+ood_q_gap_increase: 0.05
+ood_action_deviation_increase: 0.01
+gradient_clip_norm: 0.0

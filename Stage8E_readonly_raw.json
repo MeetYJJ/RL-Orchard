@@ -1,0 +1,44 @@
+{
+  "connection": {
+    "host": "192.168.1.18",
+    "port": 8080,
+    "transport": "direct TCP, one allowlisted read-only request at a time"
+  },
+  "queries": [
+    {
+      "command": "get_arm_software_info",
+      "raw_response": "{\"Product_version\":\"RML63III-BI\",\"algorithm_info\":{\"version\":\"1.5.9-0b8919e1\"},\"command\":\"arm_software_info\",\"ctrl_info\":{\"build_time\":\"2025/12/16 20:12:03\",\"commit_id\":\"355fb1b\",\"version\":\"V1.7.4\"},\"dynamic_info\":{\"model_version\":\"2\"},\"plan_info\":{\"build_time\":\"2025/12/16 20:12:21\",\"commit_id\":\"c30d45c\",\"version\":\"V1.7.4\"}}"
+    },
+    {
+      "command": "get_joint_software_version",
+      "raw_response": "{\"state\":\"joint_software_version\",\"version\":[54544,54544,54544,54544,54544,58640]}"
+    },
+    {
+      "command": "get_current_tool_frame",
+      "raw_response": "{\"payload\":0,\"pose\":[0,0,0,0,0,0],\"position\":[0,0,0],\"state\":\"current_tool_frame\",\"tool_name\":\"Arm_Tip\"}"
+    },
+    {
+      "command": "get_current_work_frame",
+      "raw_response": "{\"frame_name\":\"Base\",\"pose\":[0,0,0,0,0,0],\"state\":\"current_work_frame\"}"
+    },
+    {
+      "command": "get_current_arm_state",
+      "raw_response": "{\"arm_state\":{\"err\":[0],\"joint\":[2158,-84105,91237,88941,-88710,-51689],\"pose\":[-342453,-128042,597657,1542,-543,37]},\"state\":\"current_arm_state\"}",
+      "note": "single pre-sampling state query; eight sampled raw responses are preserved in Stage8E_readonly_feedback.jsonl"
+    }
+  ],
+  "fields_not_returned": {
+    "controller_timestamp": null,
+    "arm_err": null,
+    "sys_err": null,
+    "protocol_version": null
+  },
+  "safety": {
+    "motion_commands_sent": false,
+    "gripper_commands_sent": false,
+    "stop_commands_sent": false,
+    "configuration_commands_sent": false,
+    "raw_json_ros_service_used": false,
+    "actor_or_command_writer_started": false
+  }
+}

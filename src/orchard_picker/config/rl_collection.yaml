@@ -1,0 +1,51 @@
+rl_collection:
+  dataset_root: "/home/nvidia/RL-Orchard/rl_dataset"
+  manifest_file: "/home/nvidia/RL-Orchard/rl_dataset/collection_manifest.csv"
+  selection_seed: 20260917
+  readiness_timeout_sec: 15.0
+  episode_timeout_sec: 180.0
+  recorder_finalize_timeout_sec: 15.0
+  max_sensor_age_ms: 250.0
+  max_robot_state_age_ms: 250.0
+
+  services:
+    expert_start: "/pick_task_manager/start"
+    recorder_enable: "/rl_data_recorder/set_enabled"
+
+  topics:
+    rgb: "/apple_vision/rgb"
+    depth: "/apple_vision/aligned_depth"
+    robot_state: "/rm_json_bridge/arm_state"
+    target_info: "/apple/target_info"
+    target_base: "/pick_task_manager/target_base"
+    task_active: "/pick_task_manager/active"
+    task_state: "/pick_task_manager/state"
+    recorder_finalized: "/rl_data_recorder/finalized"
+    episode_metadata: "/rl_collection/episode_metadata"
+
+  initialization:
+    mode: "pose_library"
+    # The shipped configuration can only call the existing safety-checked Home
+    # service. Add init_01/... only after each service/pose is manually verified.
+    initial_pose_library:
+      - id: "home"
+        enabled: true
+        verified: true
+        motion: "home_service"
+        service: "/pick_task_manager/home"
+
+    # Direct /rm_json_bridge/movej is deliberately rejected. A MoveJ entry may
+    # point only at a separately verified service that performs project safety
+    # validation before forwarding the request.
+    allow_verified_movej_service: false
+    bounded_random_jitter:
+      enabled: false
+      joint_offset_min_deg: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      joint_offset_max_deg: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+  apple_position_bins:
+    enabled: false
+    x: {boundaries: [], labels: ["X_UNBINNED"]}
+    y: {boundaries: [], labels: ["Y_UNBINNED"]}
+    z: {boundaries: [], labels: ["Z_UNBINNED"]}
+    suggested_regions: []

@@ -1,0 +1,69 @@
+<mujoco model="RealMan RML63-B">
+  <compiler angle="radian" meshdir="assets/rml63b" autolimits="true" inertiafromgeom="false"/>
+  <option timestep="0.002" integrator="implicitfast" gravity="0 0 -9.81"/>
+
+  <default>
+    <joint limited="true" damping="1.0" armature="0.01"/>
+    <geom contype="1" conaffinity="1" condim="3" friction="0.8 0.1 0.1" rgba="0.72 0.75 0.80 1"/>
+    <position kp="80" kv="12" forcelimited="true" forcerange="-100 100"/>
+  </default>
+
+  <asset>
+    <mesh name="base_link_mesh" file="base_link.stl"/>
+    <mesh name="link1_mesh" file="Link1.stl"/>
+    <mesh name="link2_mesh" file="Link2.stl"/>
+    <mesh name="link3_mesh" file="Link3.stl"/>
+    <mesh name="link4_mesh" file="Link4.stl"/>
+    <mesh name="link5_mesh" file="Link5.stl"/>
+    <mesh name="link6_mesh" file="Link6.stl"/>
+  </asset>
+
+  <worldbody>
+    <light name="key" pos="1 -1 2" dir="-1 1 -2" diffuse="0.8 0.8 0.8"/>
+    <geom name="ground" type="plane" pos="0 0 0" size="2 2 0.1" rgba="0.25 0.28 0.30 1"/>
+    <body name="base_link">
+      <inertial pos="0.0014231 -0.00010179 0.050147" mass="0.66171" fullinertia="0.00099443 0.0010144 0.00067929 0.000003282 -0.0000099962 0.0000012812"/>
+      <geom name="base_link_visual_collision" type="mesh" mesh="base_link_mesh"/>
+      <body name="Link1" pos="0 0 0.172">
+        <joint name="joint1" type="hinge" axis="0 0 1" range="-3.107 3.107"/>
+        <inertial pos="-0.04328 -0.0072256 -0.012694" mass="0.89496" fullinertia="0.00091471 0.0020635 0.0019259 -0.00031043 0.00047836 0.00010298"/>
+        <geom name="Link1_visual_collision" type="mesh" mesh="link1_mesh"/>
+        <body name="Link2" pos="-0.086 0 0" quat="0.499998163 -0.500000000 -0.500000000 -0.500001837">
+          <joint name="joint2" type="hinge" axis="0 0 1" range="-3.107 3.107"/>
+          <inertial pos="0.17388 3.7424e-7 -0.089966" mass="1.5679" fullinertia="0.0009819 0.026358 0.026573 -7.2923e-8 -2.9122e-5 -1.6344e-8"/>
+          <geom name="Link2_visual_collision" type="mesh" mesh="link2_mesh"/>
+          <body name="Link3" pos="0.38 0 -0.00030011" quat="0.707105483 0 0 0.707108080">
+            <joint name="joint3" type="hinge" axis="0 0 1" range="-3.107 2.531"/>
+            <inertial pos="0.035968 -0.020568 -0.0048528" mass="0.67539" fullinertia="0.00076946 0.0010625 0.0012972 0.00039394 -0.00014324 0.00008473"/>
+            <geom name="Link3_visual_collision" type="mesh" mesh="link3_mesh"/>
+            <body name="Link4" pos="0.067482 -0.405 -0.00051458" quat="0.707105483 0.707108080 0 0">
+              <joint name="joint4" type="hinge" axis="0 0 1" range="-3.107 3.107"/>
+              <inertial pos="0.0015198 -0.032762 -0.18294" mass="0.69669" fullinertia="0.007152 0.006707 0.00074654 4.7668e-8 -9.1961e-9 0.0016523"/>
+              <geom name="Link4_visual_collision" type="mesh" mesh="link4_mesh"/>
+              <body name="Link5" quat="-0.000002597 -0.000002597 0.707108080 0.707105483">
+                <joint name="joint5" type="hinge" axis="0 0 1" range="-3.107 3.107"/>
+                <inertial pos="-0.0015183 0.028621 -0.0053972" mass="0.34758" fullinertia="0.00039985 0.00017581 0.00037218 -9.1286e-9 -2.4706e-9 -8.4078e-5"/>
+                <geom name="Link5_visual_collision" type="mesh" mesh="link5_mesh"/>
+                <body name="Link6" pos="-0.0015175 0.115 0.00081415" quat="-0.000002597 -0.000002597 0.707108080 0.707105483">
+                  <joint name="joint6" type="hinge" axis="0 0 1" range="-6.283 6.283"/>
+                  <inertial pos="-0.00081936 -1.3347e-5 -0.012683" mass="0.064801" fullinertia="2.1019e-5 1.7986e-5 3.1728e-5 -2.2879e-8 2.4491e-8 1.0159e-8"/>
+                  <geom name="Link6_visual_collision" type="mesh" mesh="link6_mesh"/>
+                  <site name="robot_end" pos="0 0 0" size="0.008" rgba="0.1 0.9 0.2 1"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="position_joint1" joint="joint1" ctrlrange="-3.107 3.107"/>
+    <position name="position_joint2" joint="joint2" ctrlrange="-3.107 3.107"/>
+    <position name="position_joint3" joint="joint3" ctrlrange="-3.107 2.531"/>
+    <position name="position_joint4" joint="joint4" ctrlrange="-3.107 3.107"/>
+    <position name="position_joint5" joint="joint5" ctrlrange="-3.107 3.107"/>
+    <position name="position_joint6" joint="joint6" ctrlrange="-6.283 6.283"/>
+  </actuator>
+</mujoco>

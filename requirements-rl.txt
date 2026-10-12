@@ -1,0 +1,3 @@
+# Installed locally under vendor/python by scripts/install_local_deps.sh.
+h5py==3.8.0
+

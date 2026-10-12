@@ -1,0 +1,23 @@
+1:27:46] [ARM] [pick_task_manager.py-5] [INFO] [1789824466.527781625] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2369, y=-0.5440, z=-0.0230
+[21:27:47] [ARM] [pick_task_manager.py-5] [INFO] [1789824467.472897971] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2373, y=-0.5443, z=-0.0229
+[21:27:49] [ARM] [pick_task_manager.py-5] [INFO] [1789824469.025974471] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2368, y=-0.5439, z=-0.0228
+[21:27:50] [ARM] [pick_task_manager.py-5] [INFO] [1789824470.474180992] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2373, y=-0.5444, z=-0.0229
+[21:27:51] [ARM] [pick_task_manager.py-5] [INFO] [1789824471.526197918] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2371, y=-0.5444, z=-0.0229
+[21:27:53] [ARM] [pick_task_manager.py-5] [INFO] [1789824473.046079503] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2370, y=-0.5441, z=-0.0236
+[21:27:54] [ARM] [pick_task_manager.py-5] [INFO] [1789824473.976721973] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2370, y=-0.5441, z=-0.0234
+[21:27:55] [ARM] [pick_task_manager.py-5] [INFO] [1789824475.335876930] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2374, y=-0.5444, z=-0.0231
+[21:27:56] [ARM] [pick_task_manager.py-5] [INFO] [1789824476.497995119] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2369, y=-0.5440, z=-0.0232
+[21:27:57] [警告] Preflight 已失效：重新启动 RL 采集环境
+[21:27:57] [警告] Preflight 已失效：RL vision 状态变化：Attached -> Stopped
+[21:27:57] [警告] Preflight 已失效：RL 采集环境启动失败
+[21:27:57] [信息] 等待 vision 的 fresh ROS graph scan
+[21:27:57] [警告] Preflight 已失效：RL vision 状态变化：Stopped -> Attached
+[21:27:57] [信息] vision 已存在，Attach，不重复启动
+[21:27:57] [信息] 等待 arm 的 fresh ROS graph scan
+[21:27:57] [警告] Preflight 已失效：RL arm 状态变化：Stopped -> Error
+[21:27:57] [错误] 检测到外部 arm ROS 接口但尚未 Ready；为避免重复启动，已停止本次启动流程
+[21:27:57] [警告] Preflight 已失效：arm 外部接口不完整
+[21:27:57] [错误] arm 外部接口不完整
+[21:27:58] [ARM] [pick_task_manager.py-5] [INFO] [1789824477.946946539] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2369, y=-0.5440, z=-0.0232
+[21:27:59] [ARM] [pick_task_manager.py-5] [INFO] [1789824479.539849515] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2372, y=-0.5444, z=-0.0232
+[21:28:00] [ARM] [pick_task_manager.py-5] [INFO] [1789824480.483239951] [pick_task_manager]: Locked apple target in base_link from camera_link: x=-0.2373, y=-0.5444, z=-0.0229

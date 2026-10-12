@@ -1,0 +1,61 @@
+{
+  "name": "stage8e4_actor_shadow_bundle_20260930",
+  "purpose": "offline shadow inference only",
+  "hardware_writer_included": false,
+  "reach": {
+    "state_dim": 15,
+    "action_dim": 6,
+    "action": "full Cartesian residual m/rad"
+  },
+  "grasp_lift": {
+    "state_dim": 31,
+    "action_dim": 7,
+    "action": "full Cartesian residual m/rad plus gripper candidate"
+  },
+  "files": {
+    "training/models.py": {
+      "sha256": "25ca7a8cea4abf7c84136b0bdc2fef2bfcfb5c04fedb7eaba56b8eee28f5634e",
+      "bytes": 3512
+    },
+    "training/deployment/__init__.py": {
+      "sha256": "5a7a4dbfd1abf4613617679f2aef7712d2190d318836b11df759f4a134f78629",
+      "bytes": 491
+    },
+    "training/deployment/pose_math.py": {
+      "sha256": "039e11e9ea977ee03e77db6ce67ec15c3846c352449a2cd23a96f02d25bfdda6",
+      "bytes": 4063
+    },
+    "training/deployment/cartesian_controller_core.py": {
+      "sha256": "4e346d57353b50680d6c16522e8106c74e5770358884e885db5ed2eb298310b5",
+      "bytes": 8613
+    },
+    "training/deployment/skill_runtime_contract.py": {
+      "sha256": "a4918202e19ab0be5195d13b74bd514cdc39c33b52299caafde999ae2d4092ac",
+      "bytes": 7714
+    },
+    "training/deployment/validate_origin_shadow_input.py": {
+      "sha256": "67244bf33e4dbc7133897d34aa692b98892b9887d0b7c90574196ad99d134a1c",
+      "bytes": 5086
+    },
+    "training/deployment/shadow_policy_runtime.py": {
+      "sha256": "6bf526b7b580b6c780928109e1c0e7eac4f5b6dd716954f976bebb14607934e1",
+      "bytes": 8053
+    },
+    "training/runs/stage8b2_1_cartesian_bc_dagger_20260929/actor_best.pt": {
+      "sha256": "1f16e42614fa883ddab748b000c2ac1ef055c30add10790ff10b3182b4f58549",
+      "bytes": 295332
+    },
+    "training/runs/stage8b2_1_cartesian_bc_dagger_20260929/normalization.npz": {
+      "sha256": "a48da779368407dc31245ade17fc1baf92f2d17b54ca7a61c1035d51e5a2e671",
+      "bytes": 2062
+    },
+    "training/runs/stage8c2_2_grasp_lift_bc_dagger_20260930/actor_best.pt": {
+      "sha256": "84b6f7b2c22cf9fe48deae7d652c5343899288c0ed7e5855375c1d61023b45fc",
+      "bytes": 313828
+    },
+    "training/runs/stage8c2_2_grasp_lift_bc_dagger_20260930/normalization.npz": {
+      "sha256": "e8f7f266c2f5d6d868f63e9f2ebcb3e980f287d636626ea86513a826a92c1bda",
+      "bytes": 1086
+    }
+  }
+}
